@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ui.RegistroOperacion">
+
+    <EditText
+        android:id="@+id/editTextIMEI"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:inputType="textPersonName"
+        android:text="    Cliente"
+        android:longClickable="false"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextIMEIOperar"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="textPersonName"
+        android:longClickable="false"
+        android:text="    IMEI a Operar"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextIMEI" />
+
+    <EditText
+        android:id="@+id/editTextComando"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="   Tipo de Operación"
+        android:longClickable="false"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextIMEIOperar" />
+
+    <Button
+        android:id="@+id/btnGrabarOperacion"
+        android:layout_width="379dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorAccent"
+        android:text="GRABAR OPERACIÓN"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName12"
+        app:layout_constraintVertical_bias="0.158" />
+
+    <TextView
+        android:id="@+id/clienteView"
+        android:layout_width="224dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:foregroundGravity="center_vertical"
+        android:gravity="center|left"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/imeiView"
+        android:layout_width="224dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:gravity="center|left"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="@+id/editTextIMEIOperar"
+        app:layout_constraintTop_toBottomOf="@+id/clienteView" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName2"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="   Tipo de Trabajo"
+        android:longClickable="false"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        android:clickable="false"
+        android:backgroundTint="#D3D7DC"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextComando" />
+
+    <Spinner
+        android:id="@+id/spinnerTipoTrabajo"
+        android:layout_width="217dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2"
+        app:layout_constraintTop_toBottomOf="@+id/tipoOperacionView" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName10"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="   Posición GPS"
+        android:longClickable="false"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        android:clickable="false"
+        android:backgroundTint="#D3D7DC"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+
+    <Spinner
+        android:id="@+id/spinnerPosicionGps"
+        android:layout_width="217dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName10"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerTipoTrabajo" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName12"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="textPersonName"
+        android:longClickable="false"
+        android:text="   Plan"
+        android:textColor="#858585"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName10" />
+
+    <TextView
+        android:id="@+id/planView"
+        android:layout_width="224dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:gravity="center|left"
+        android:text=""
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName12"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPosicionGps" />
+
+    <TextView
+        android:id="@+id/tipoOperacionView"
+        android:layout_width="224dp"
+        android:layout_height="55dp"
+        android:text="GPS"
+        android:gravity="center|left"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintEnd_toEndOf="@+id/editTextComando"
+        app:layout_constraintTop_toBottomOf="@+id/imeiView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="1dp"
+        tools:context=".ui.DetalleGps">
+
+        <EditText
+            android:id="@+id/editTextIMEI"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    IMEI"
+            android:textSize="14sp"
+            android:textColor="#858585"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextUltimaTrans"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textMultiLine"
+            android:longClickable="false"
+            android:backgroundTint="#D3D7DC"
+            android:text="    Última Transmición"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBloquear" />
+
+        <EditText
+            android:id="@+id/editTextComando"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:textColor="#858585"
+            android:entries="@array/spinnerItems"
+            android:focusable="false"
+            android:longClickable="false"
+            android:text="    Comando"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextUltimaTrans" />
+
+        <EditText
+            android:id="@+id/editTextBloquear"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:ems="10"
+            android:gravity="left|center_vertical"
+            android:inputType="textPersonName"
+            android:text="    Bloqueo"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:clickable="false"
+            android:longClickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextOnline" />
+
+        <EditText
+            android:id="@+id/editTextOnline"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Online"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName9" />
+
+        <EditText
+            android:id="@+id/editTextIMEIOperar"
+            android:layout_width="0dp"
+            android:layout_height="59dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:gravity="center|left"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Telefono, SIM"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextModelo" />
+
+        <EditText
+            android:id="@+id/editTextModelo"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Modelo"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextIMEI" />
+
+        <TextView
+            android:id="@+id/tipoSolView"
+            android:layout_width="226dp"
+            android:layout_height="58dp"
+            android:foregroundGravity="center_vertical"
+            android:gravity="center|left"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/editTextModelo"
+            app:layout_constraintTop_toBottomOf="@+id/imeiAutoComplete" />
+
+        <TextView
+            android:id="@+id/ultimaTransView"
+            android:layout_width="230dp"
+            android:layout_height="56dp"
+            android:gravity="center|left"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bloqueoView" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName5"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Marca"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName6"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Modelo"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName14"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Tipo"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6" />
+
+        <AutoCompleteTextView
+            android:id="@+id/telefAutoComplete"
+            android:layout_width="233dp"
+            android:layout_height="59dp"
+            android:backgroundTint="@android:color/transparent"
+            android:digits="1234567890"
+            android:gravity="center|left"
+            android:hint="Telefono o SIM Card"
+            android:inputType="phone"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextIMEIOperar"
+            app:layout_constraintTop_toBottomOf="@+id/tipoSolView" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:backgroundTint="#D3D7DC"
+            android:text="    Nombre Vehiculo"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:textColor="#858585"
+            android:clickable="false"
+            android:longClickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName14" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName7"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:longClickable="false"
+            android:text="    Número Credito"
+            android:textColor="#858585"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+        <EditText
+            android:id="@+id/numCreditoView"
+            android:layout_width="230dp"
+            android:layout_height="55dp"
+            android:background="@android:color/transparent"
+            android:digits="1234567890"
+            android:gravity="center|left"
+            android:hint="Ingrese Número Credito"
+            android:inputType="phone"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nombreView" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName9"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:backgroundTint="#D3D7DC"
+            android:text="    Sutran"
+            android:textSize="14sp"
+            android:textColor="#858585"
+            android:focusable="false"
+            android:clickable="false"
+
+            android:longClickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName7" />
+
+        <Spinner
+            android:id="@+id/spinnerSutran"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="left"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName9"
+            app:layout_constraintTop_toBottomOf="@+id/numCreditoView" />
+
+        <Spinner
+            android:id="@+id/spinnerComando"
+            android:layout_width="220dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ultimaTransView" />
+
+        <TextView
+            android:id="@+id/direccionView"
+            android:layout_width="230dp"
+            android:layout_height="91dp"
+            android:backgroundTint="#D3D7DC"
+            android:gravity="center|top|left"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerSutran" />
+
+        <Button
+            android:id="@+id/buttonEnviar"
+            android:layout_width="168dp"
+            android:layout_height="71dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/colorAccent"
+            android:text="ENVIAR COMANDO"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextComando"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/nombreView"
+            android:layout_width="230dp"
+            android:layout_height="55dp"
+            android:background="@android:color/transparent"
+            android:cursorVisible="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Ingrese Nombre Vehiculo"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerTipoVehiculo" />
+
+        <TextView
+            android:id="@+id/bloqueoView"
+            android:layout_width="226dp"
+            android:layout_height="53dp"
+            android:backgroundTint="#D3D7DC"
+            android:gravity="center|left"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/editTextBloquear"
+            app:layout_constraintTop_toBottomOf="@+id/direccionView" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName3"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#D3D7DC"
+            android:clickable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:inputType="textPersonName"
+            android:textColor="#858585"
+            android:longClickable="false"
+            android:text="    Flota"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextIMEIOperar" />
+
+        <ImageView
+            android:id="@+id/btnLocalizacion"
+            android:layout_width="82dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="24dp"
+            android:adjustViewBounds="true"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="@+id/editTextOnline"
+            app:layout_constraintHorizontal_bias="0.867"
+            app:layout_constraintStart_toStartOf="@+id/direccionView"
+            app:layout_constraintTop_toTopOf="@+id/direccionView"
+            app:srcCompat="@drawable/ic_save"
+            tools:ignore="VectorDrawableCompat" />
+
+        <Spinner
+            android:id="@+id/spinnerMarca"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName5"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerFlota" />
+
+        <Spinner
+            android:id="@+id/spinnerFlota"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName3"
+            app:layout_constraintTop_toBottomOf="@+id/telefAutoComplete" />
+
+        <Spinner
+            android:id="@+id/spinnerTipoVehiculo"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName14"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerModelo" />
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="168dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/colorAccent"
+            android:text="SIGUIENTE"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinnerModelo"
+            android:layout_width="217dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerMarca" />
+
+        <AutoCompleteTextView
+            android:id="@+id/imeiAutoComplete"
+            android:layout_width="233dp"
+            android:layout_height="55dp"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="Ingresa el IMEI"
+            android:inputType="phone"
+            android:maxLength="15"
+            android:completionThreshold="6"
+            android:gravity="center|left"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextIMEI"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+

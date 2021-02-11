@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".ui.IngresoIMEI">
+
+    <Button
+        android:id="@+id/btnSeleccionarImei"
+        android:layout_width="348dp"
+        android:layout_height="76dp"
+        android:background="@color/colorAccent"
+        android:text="SELECCIONAR"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName8"
+        app:layout_constraintVertical_bias="0.175" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName8"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#D3D7DC"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="textPersonName"
+        android:text="   IMEI Nuevo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/numeroIMEI" />
+
+
+    <!-- android:inputType="number" -->
+    <!--  android:maxLength="6" -->
+    <AutoCompleteTextView
+        android:id="@+id/numeroIMEI"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#D3D7DC"
+        android:digits="1234567890"
+        android:focusable="true"
+        android:gravity="center"
+        android:inputType="phone"
+        android:maxLength="15"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName8"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

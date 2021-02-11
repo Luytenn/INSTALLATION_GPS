@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invalid_nombreVeh">Ingresa Nombre Vehiculo</string>
+    <string name="invalid_numCredito">Ingresa Numero Credito</string>
+    <string name="invalid_telfonoSIM">Ingrese Campo Requerido</string>
+    <string name="invalid_numeroIMEI">Ingresa el Número de IMEI</string>
+    <string name="invalid_imei">Ingrese Imei Válido</string>
+</resources>
