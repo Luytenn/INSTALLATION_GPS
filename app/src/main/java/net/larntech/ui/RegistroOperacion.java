@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ShareActionProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,8 +20,6 @@ import net.larntech.R;
 import net.larntech.common.Constantes;
 import net.larntech.common.SharedPreferencesManager;
 import net.larntech.retrofit.client.AuthTareasClient;
-import net.larntech.retrofit.client.PlanClient;
-import net.larntech.retrofit.client.VehiculoClient;
 import net.larntech.retrofit.request.RequestGrabarTarea;
 
 import java.util.ArrayList;
@@ -71,8 +68,15 @@ public class RegistroOperacion extends AppCompatActivity {
         String imei = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_IMEI_GPS);
         String plan = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_PLAN);
 
+        if(ListadoTareas.estado){
+
+            imeiText.setText(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_IMEI_GPS));
+
+        }else{
+            imeiText.setText(imei);
+        }
+
         clienteText.setText(cliente);
-        imeiText.setText(imei);
         planText.setText(plan);
 
 
@@ -106,7 +110,7 @@ public class RegistroOperacion extends AppCompatActivity {
 
                             Toast.makeText(RegistroOperacion.this, "Se Registro Correctamente", Toast.LENGTH_SHORT).show();
 
-                            Intent intnt = new Intent(getApplicationContext(), TareaActivity.class);
+                            Intent intnt = new Intent(getApplicationContext(), ListadoTareas.class);
                             startActivity(intnt);
 
 

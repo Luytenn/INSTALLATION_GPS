@@ -12,14 +12,10 @@ public class MarcaClient {
 
     public static Retrofit getRetrofit(){
 
-        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        okHttpClientBuilder.addInterceptor(new AuthInterceptor());
-        OkHttpClient cliente = okHttpClientBuilder.build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constantes.API_MINITWITTER_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(cliente)
                 .build();
 
         return retrofit;

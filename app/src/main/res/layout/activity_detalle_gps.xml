@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="1dp"
-        tools:context=".ui.DetalleGps">
+        tools:context=".ui.RegistroVehiculo">
 
         <EditText
             android:id="@+id/editTextIMEI"
@@ -135,7 +135,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextIMEI" />
 
         <TextView
-            android:id="@+id/tipoSolView"
+            android:id="@+id/modelogpsView"
             android:layout_width="226dp"
             android:layout_height="58dp"
             android:foregroundGravity="center_vertical"
@@ -215,14 +215,13 @@
             android:inputType="phone"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/editTextIMEIOperar"
-            app:layout_constraintTop_toBottomOf="@+id/tipoSolView" />
+            app:layout_constraintTop_toBottomOf="@+id/modelogpsView" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:ems="10"
-            android:inputType="textPersonName"
             android:backgroundTint="#D3D7DC"
             android:text="    Nombre Vehiculo"
             android:textSize="14sp"
@@ -230,6 +229,8 @@
             android:textColor="#858585"
             android:clickable="false"
             android:longClickable="false"
+            android:textAllCaps="true"
+            android:inputType="textCapCharacters"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName14" />
@@ -310,21 +311,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerSutran" />
 
-        <Button
-            android:id="@+id/buttonEnviar"
-            android:layout_width="168dp"
-            android:layout_height="71dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/colorAccent"
-            android:text="ENVIAR COMANDO"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextComando"
-            app:layout_constraintVertical_bias="0.0" />
-
         <EditText
             android:id="@+id/nombreView"
             android:layout_width="230dp"
@@ -404,18 +390,6 @@
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName14"
             app:layout_constraintTop_toBottomOf="@+id/spinnerModelo" />
 
-        <Button
-            android:id="@+id/btnSiguiente"
-            android:layout_width="168dp"
-            android:layout_height="71dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/colorAccent"
-            android:text="SIGUIENTE"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <Spinner
             android:id="@+id/spinnerModelo"
             android:layout_width="217dp"
@@ -437,6 +411,40 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/editTextIMEI"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="418dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextComando">
+
+            <Button
+                android:id="@+id/btnSiguiente"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:text="SIGUIENTE"
+                android:textColor="@color/colorWhite" />
+
+            <Button
+                android:id="@+id/buttonEnviar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:text="ENVIAR COMANDO"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

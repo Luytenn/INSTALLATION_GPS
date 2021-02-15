@@ -1,6 +1,7 @@
 package net.larntech.retrofit.service;
 
 import net.larntech.retrofit.request.RequestVehiculo;
+import net.larntech.retrofit.response.TareaCompleta;
 import net.larntech.retrofit.response.TecnicoTareas;
 import net.larntech.retrofit.response.Ubicacion;
 
@@ -11,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface VehiculoService {
@@ -30,7 +32,8 @@ public interface VehiculoService {
         Call<RequestVehiculo> enviarComando(@Query("idVehiculo") Integer idVehiculo,
                                             @Query("flagActivado") int flagActivado);
 
-
+        @GET("api/tareas/editar/{idTarea}")
+        Call<TareaCompleta> getTareaEditar(@Path("idTarea") int idTarea);
 
 
 }

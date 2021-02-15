@@ -1,7 +1,7 @@
 package net.larntech.common;
 
 public class Constantes {
-    public static final String API_MINITWITTER_BASE_URL = "https://f086b138d98a.ngrok.io/";
+    public static final String API_MINITWITTER_BASE_URL = "https://f55806826752.ngrok.io/";
 
     // Preferences
     public static final String PREF_TOKEN = "PREF_TOKEN";
@@ -13,4 +13,21 @@ public class Constantes {
     public static final String PREF_ID_TAREA = "PREF_ID_TAREA";
     public static final String PREF_CLIENTE = "PREF_CLIENTE";
     public static final String PREF_PLAN = "PREF_PLAN";
+
+
+    //EditarTareas
+
+    public static final String PREF_NOM_VEH = "PREF_NOM_VEH";
+    public static final String PREF_NUM_CRE = "PREF_NUM_CRE";
+    public static final String PREF_NUM_SUTRAN = "PREF_NUM_SUTRAN";
+    public static final String PREF_FLAG_BLOQUEO = "PREF_FLAG_BLOQUEO";
+    public static final String PREF_ULT_DIRECCION = "PREF_ULT_DIRECCION";
+    public static final String PREF_ULT_TRANS = "PREF_ULT_TRANS";
+    public static final String PREF_TELEFONO2 = "PREF_TELEFONO2";
+    public static final String PREF_ID_CHIP = "PREF_ID_CHIP";
+    public static final String PREF_ID_MARCA = "PREF_ID_MARCA";
+    public static final String PREF_ID_MODELO = "PREF_ID_MODELO";
+    public static final String PREF_ID_TIPO = "PREF_ID_TIPO";
+    public static final String PREF_ID_FLOTA = "PREF_ID_FLOTA";
+
 }

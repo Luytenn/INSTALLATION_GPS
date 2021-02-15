@@ -111,7 +111,7 @@ public class TareasAdapter extends RecyclerView.Adapter<TareasAdapter.TareasAdap
 
             itemRecycler = itemView.findViewById(R.id.ItemRecycler);
             placa = itemView.findViewById(R.id.clienteView);
-            vin = itemView.findViewById(R.id.tipoSolView);
+            vin = itemView.findViewById(R.id.modelogpsView);
             conceci = itemView.findViewById(R.id.concecionario);
             direccion = itemView.findViewById(R.id.direccion);
             imageMore = itemView.findViewById(R.id.imageMore);

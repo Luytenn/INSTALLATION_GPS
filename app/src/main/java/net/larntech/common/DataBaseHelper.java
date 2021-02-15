@@ -19,6 +19,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static DataBaseHelper sInstance;
 
+    public static final String DB_NAME = "local.db";
     public static final String TABLA_MARCA = "TABLA_MARCA";
     public static final String COLUMNA_MARCA_ID = "COLUMNA_MARCA_ID";
     public static final String COLUMNA_MARCA_DES = "COLUMNA_MARCA_DES";
@@ -33,7 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMNA_MODELO_MARCA_ID = "COLUMNA_MODELO_MARCA_ID";
 
     public DataBaseHelper(@Nullable Context context) {
-        super(context, "customer.db", null, 6);
+        super(context, DB_NAME, null, 6);
 
     }
 
@@ -43,17 +44,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String createTableTipo =  "CREATE TABLE " + TABLA_TIPO + "(" + COLUMNA_TIPO_ID + " INTEGER PRIMARY KEY, " + COLUMNA_TIPO_DES + " TEXT)";
 
-        db.execSQL(createTableTipo);
-
-        db.execSQL("CREATE TABLE "+ TABLA_MARCA +" ("+
+        String createTableMarca = "CREATE TABLE "+ TABLA_MARCA +" ("+
                 COLUMNA_MARCA_ID +" INTEGER PRIMARY KEY, "+
-                COLUMNA_MARCA_DES +" TEXT)");
+                COLUMNA_MARCA_DES +" TEXT)";
 
-        db.execSQL("CREATE TABLE "+ TABLA_MODELO +" ("+
+        String createTableModelo = "CREATE TABLE "+ TABLA_MODELO +" ("+
                 COLUMNA_MODELO_ID +" INTEGER PRIMARY KEY, "
                 + COLUMNA_MODELO_DES + " text not null, "
                 + COLUMNA_MODELO_MARCA_ID + " integer, "
-                + " FOREIGN KEY ("+COLUMNA_MODELO_MARCA_ID+") REFERENCES "+TABLA_MARCA+"("+COLUMNA_MARCA_ID+"))");
+                + " FOREIGN KEY ("+COLUMNA_MODELO_MARCA_ID+") REFERENCES "+TABLA_MARCA+"("+COLUMNA_MARCA_ID+"))";
+
+        db.execSQL(createTableTipo);
+        db.execSQL(createTableMarca);
+        db.execSQL(createTableModelo);
 
 
     }

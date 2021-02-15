@@ -41,7 +41,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     Button btnLogin;
     TextView tvGoSignUp;
-    EditText etEmail, etPassword;
+    EditText etUsuario, etPassword;
     LoginClient loginClient;
     LoginService loginService;
     List<ModeloVehiculo> listaModelo = new ArrayList<>();
@@ -52,9 +52,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-
-
 
         insertarTipoVehiculoLocal();
         insertarMarcaLocal();
@@ -82,7 +79,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private void findViews() {
         btnLogin = findViewById(R.id.buttonLogin);
         tvGoSignUp = findViewById(R.id.textViewGoSignUp);
-        etEmail = findViewById(R.id.editTextEmail);
+        etUsuario = findViewById(R.id.editTextUsuario);
         etPassword = findViewById(R.id.editTextPassword);
     }
 
@@ -109,79 +106,90 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    @SuppressLint("ResourceAsColor")
+
     private void goToLogin() {
 
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(Login.this);
+
+        boolean marca = dataBaseHelper.validacionRowsMarca();
+        boolean tipo = dataBaseHelper.validacionRowsTipo();
+        boolean modelo = dataBaseHelper.validacionRowsModelo();
+
+        if(marca!=false && tipo!=false && modelo!=false) {
+
+            String email = etUsuario.getText().toString();
+            String password = etPassword.getText().toString();
+            String grant_type = "password";
+
+            if (email.isEmpty()) {
+                etUsuario.setError("El usuario es requerido");
+
+            } else if (password.isEmpty()) {
+                etPassword.setError("La contraseña es requerida");
+
+            } else {
+
+                btnLogin.setEnabled(false);
+                int color = Color.parseColor("#5356fe");
+                btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+
+                Call<ResponseAuth> call = loginService.doLogin(email, password, grant_type);
 
 
+                call.enqueue(new Callback<ResponseAuth>() {
+                    @Override
+                    public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
+                        if (response.isSuccessful()) {
 
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        String grant_type = "password";
+                            SharedPreferencesManager.setSomeStringValue(Constantes.PREF_TOKEN, response.body().getAccess_token());
+                            SharedPreferencesManager.setSomeStringValue(Constantes.PREF_USERNAME, email);
 
-        if(email.isEmpty()) {
-            etEmail.setError("El usuario es requerido");
-
-        } else if(password.isEmpty()) {
-            etPassword.setError("La contraseña es requerida");
-
-        } else {
-
-            btnLogin.setEnabled(false);
-            int color = Color.parseColor("#5356fe");
-            btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-
-            Call<ResponseAuth> call = loginService.doLogin(email,password,grant_type);
-
-
-            call.enqueue(new Callback<ResponseAuth>() {
-                @Override
-                public void onResponse(Call<ResponseAuth> call, Response<ResponseAuth> response) {
-                    if(response.isSuccessful()) {
-
-                        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_TOKEN, response.body().getAccess_token());
-                        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_USERNAME,email);
-
-                        System.out.println(response.body().getAccess_token());
-
+                            System.out.println(response.body().getAccess_token());
 
 
                             Toast.makeText(Login.this, "Sesión iniciada correctamente", Toast.LENGTH_SHORT).show();
                             btnLogin.setEnabled(true);
                             int color = Color.parseColor("#536DFE");
                             btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-                            Intent i = new Intent(Login.this, TareaActivity.class);
+                            Intent i = new Intent(Login.this, ListadoTareas.class);
                             startActivity(i);
                             // Destruimos este Activity para que no se pueda volver.
                             finish();
 
 
+                        } else {
+                            etUsuario.setError("El usuario o contraseña son incorrectas");
+                            etPassword.setError("El usuario o contraseña son incorrectas");
+                            etPassword.setFocusableInTouchMode(true);
+                            etPassword.requestFocus();
+                            //Toast.makeText(Login.this, "Algo fue mal, revise sus datos de acceso, o la red de sus datos móviles", Toast.LENGTH_LONG).show();
+                            btnLogin.setEnabled(true);
+                            int color = Color.parseColor("#536DFE");
+                            btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+                        }
+                    }
 
-
-
-                    } else {
-                        etEmail.setError("El usuario o contraseña son incorrectas");
-                        etPassword.setError("El usuario o contraseña son incorrectas");
-                        etPassword.setFocusableInTouchMode(true);
-                        etPassword.requestFocus();
-                        //Toast.makeText(Login.this, "Algo fue mal, revise sus datos de acceso, o la red de sus datos móviles", Toast.LENGTH_LONG).show();
+                    @Override
+                    public void onFailure(Call<ResponseAuth> call, Throwable t) {
+                        Toast.makeText(Login.this, "Problemas de conexión. Inténtelo de nuevo", Toast.LENGTH_LONG).show();
                         btnLogin.setEnabled(true);
                         int color = Color.parseColor("#536DFE");
                         btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+
                     }
-                }
+                });
 
-                @Override
-                public void onFailure(Call<ResponseAuth> call, Throwable t) {
-                    Toast.makeText(Login.this, "Problemas de conexión. Inténtelo de nuevo", Toast.LENGTH_SHORT).show();
-                    btnLogin.setEnabled(true);
-                    int color = Color.parseColor("#536DFE");
-                    btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+            }
 
-                }
-            });
+        }else{
+                btnLogin.setEnabled(true);
+                int color = Color.parseColor("#536DFE");
+                btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
+                System.out.println("No sevuev cargaron los datos correctamente");
+                Intent i = new Intent(Login.this, Login.class);
+                Toast.makeText(Login.this, "Error al cargar los datos, reinicie la aplicación", Toast.LENGTH_LONG).show();
 
-        }
+            }
     }
 
     private void insertarMarcaLocal(){
@@ -271,7 +279,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         Toast.makeText(Login.this, "Vuelva a Ingresar Nuevamente", Toast.LENGTH_SHORT).show();
 
                     }
-
 
                 }
 

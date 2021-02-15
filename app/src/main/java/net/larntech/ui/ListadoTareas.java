@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +22,9 @@ import net.larntech.common.SharedPreferencesManager;
 import net.larntech.retrofit.client.AuthTareasClient;
 import net.larntech.retrofit.TareasAdapter;
 import net.larntech.retrofit.client.FlotaClient;
+import net.larntech.retrofit.client.VehiculoClient;
 import net.larntech.retrofit.response.Flota;
+import net.larntech.retrofit.response.TareaCompleta;
 import net.larntech.retrofit.response.TecnicoTareas;
 
 import java.util.ArrayList;
@@ -34,15 +35,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TareaActivity extends AppCompatActivity implements TareasAdapter.ClickedItem {
+public class ListadoTareas extends AppCompatActivity implements TareasAdapter.ClickedItem {
 
-    LoadingDialog loadingDialog = new LoadingDialog(TareaActivity.this);
+    LoadingDialog loadingDialog = new LoadingDialog(ListadoTareas.this);
     Toolbar toolbar;
     RecyclerView recyclerView;
     TareasAdapter tareasAdapter = new TareasAdapter();
     TextView username;
-    public static List<String> listaFlota = new ArrayList<>();
-    public static HashMap<Integer,String> mapFlota=new HashMap<Integer,String>();
+    Button buttonSalir;
+    public static boolean estado = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,66 +52,39 @@ public class TareaActivity extends AppCompatActivity implements TareasAdapter.Cl
         setContentView(R.layout.activity_tarea);
 
 
-
-
         getSupportActionBar().hide();
 
-        getFlota();
-
-        username =  (TextView)findViewById(R.id.usuarioView);
-
-        username.setText(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_USERNAME));
 
 
-        toolbar = findViewById(R.id.toolbar);
+        events();
 
-        loadingDialog.startLoadingDialog();
+        getTareas();
 
-        recyclerView = findViewById(R.id.recyclerview);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-
-        tareasAdapter = new TareasAdapter(this::ClickedUser);
-
-        getAllUsers();
-
-
+        cerrarSesion();
 
 
     }
 
-    private void getFlota(){
 
-        Call<List<Flota>> flotaList = FlotaClient.getFlotaService().getFlota();
-        flotaList.enqueue(new Callback<List<Flota>>() {
+    public void cerrarSesion(){
+
+        buttonSalir.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<Flota>> call, Response<List<Flota>> response) {
-                if(response.isSuccessful()){
+            public void onClick(View v) {
+                // Clearing all data from Shared Preferences
+                SharedPreferencesManager.getSharedPreferences().edit().clear();
+                SharedPreferencesManager.getSharedPreferences().edit().commit();
 
-                    System.out.println("SUCCESS DROPDOWN FLOTA");
-                    for(Flota temp: response.body()){
+                // After logout redirect user to Loing Activity
+                Intent i = new Intent(ListadoTareas.this, Login.class);
+                // Closing all the Activities
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                        String descripcion = temp.getDesFlota();
-                        int idFlota = temp.getIdFlota();
-                        listaFlota.add(temp.getDesFlota());
-                        mapFlota.put(idFlota,descripcion);
+                // Add new Flag to start new Activity
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-
-                        System.out.println("DESCRIPCION FLOTA : " +  descripcion);
-                        System.out.println("ID FLOTA : " + idFlota);
-
-
-
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Flota>> call, Throwable t) {
-                Log.e("failure", t.getLocalizedMessage());
+                // Staring Login Activity
+                startActivity(i);
             }
         });
 
@@ -117,7 +92,28 @@ public class TareaActivity extends AppCompatActivity implements TareasAdapter.Cl
 
     }
 
-    public void getAllUsers() {
+    private void events(){
+
+        username =  (TextView)findViewById(R.id.usuarioView);
+        toolbar = findViewById(R.id.toolbar);
+        recyclerView = findViewById(R.id.recyclerview);
+        buttonSalir = findViewById(R.id.btnSalir);
+
+        username.setText(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_USERNAME));
+
+        loadingDialog.startLoadingDialog();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        tareasAdapter = new TareasAdapter(this::ClickedUser);
+
+
+    }
+
+
+
+
+    public void getTareas() {
 
         Call<List<TecnicoTareas>> tareaList = AuthTareasClient.getAuthTareasService().getTareas();
 
@@ -134,10 +130,17 @@ public class TareaActivity extends AppCompatActivity implements TareasAdapter.Cl
 
 
                     }
+
                     tareasAdapter.setData(tareas);
                     recyclerView.setAdapter(tareasAdapter);
 
                     loadingDialog.dismissDialog();
+
+                }else{
+
+                    Toast.makeText(ListadoTareas.this, "No se ha podido listar las tareas, intentelo de nuevo", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(ListadoTareas.this, Login.class);
+                    startActivity(i);
 
                 }
             }
@@ -145,8 +148,10 @@ public class TareaActivity extends AppCompatActivity implements TareasAdapter.Cl
             @Override
             public void onFailure(Call<List<TecnicoTareas>> call, Throwable t) {
                 Log.e("failure", t.getLocalizedMessage());
-                Toast.makeText(TareaActivity.this, "No se ha posido listar las tardes, consulta mas tarde", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListadoTareas.this, "No se ha podido listar las tareas, intentelo de nuevo", Toast.LENGTH_LONG).show();
                 loadingDialog.dismissDialog();
+                Intent i = new Intent(ListadoTareas.this, Login.class);
+                startActivity(i);
             }
         });
 
@@ -158,9 +163,8 @@ public class TareaActivity extends AppCompatActivity implements TareasAdapter.Cl
         startActivity(new Intent(this,DetalleTareas.class).putExtra("data", userResponse));
         SharedPreferencesManager.setSomeStringValue(Constantes.PREF_TELEFONO,userResponse.getCelular());
         SharedPreferencesManager.setSomeStringValue(Constantes.PREF_ID_TAREA,String.valueOf(userResponse.getId()));
-
-
-
+        estado = userResponse.getEstado();
+        System.out.println("ESTAO DE LA TAREA : " + estado);
 
     }
 }

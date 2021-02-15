@@ -56,9 +56,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DetalleGps extends AppCompatActivity {
+public class RegistroVehiculo extends AppCompatActivity {
 
-    LoadingDialog loadingDialog = new LoadingDialog(DetalleGps.this);
+    LoadingDialog loadingDialog = new LoadingDialog(RegistroVehiculo.this);
     AwesomeValidation awesomeValidation;
     ImageView btnLocal;
     Button btnEnviar;
@@ -91,6 +91,7 @@ public class DetalleGps extends AppCompatActivity {
     HashMap<Integer,String> mapMarca = new HashMap<>();
     HashMap<Integer,String> mapTipo = new HashMap<>();
     HashMap<Integer,String> mapModelo = new HashMap<>();
+    HashMap<Integer,String> mapMarcaPosition = new HashMap<>();
     String telefono;
     String marca="";
     String modelo;
@@ -105,6 +106,10 @@ public class DetalleGps extends AppCompatActivity {
     int idFlota;
     int vehiculoId;
     int idGps;
+    int position;
+    int positionTipo;
+    int positionFlota;
+    int positionModelo;
     Integer idVehiculo;
     String tipoVehiculo;
     String nombreVehiculo;
@@ -114,6 +119,8 @@ public class DetalleGps extends AppCompatActivity {
     String direccion;
     int selectOperacion;
     int flagBloqueo;
+    boolean imeiSelected = false;
+    boolean telefSelected = false;
     String ultimaTrans;
 
 
@@ -124,15 +131,17 @@ public class DetalleGps extends AppCompatActivity {
         setContentView(R.layout.activity_detalle_gps);
         getSupportActionBar().setTitle("Datos");
 
-        getPlan();
+
 
         events();
+
+        comboBoxSutran();
 
         llenarCasillas();
 
         comboBoxFlota();
 
-        comboBoxSutran();
+
 
         comboBoxComando();
 
@@ -163,6 +172,7 @@ public class DetalleGps extends AppCompatActivity {
     }
 
     private void getPlan(){
+
         idTarea = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TAREA));
         System.out.println("ID DE LA TAREA : " + idTarea);
         Call<String> obtenerPlan = PlanClient.getPlanService().obtenerPlan(idTarea);
@@ -181,11 +191,14 @@ public class DetalleGps extends AppCompatActivity {
 
                     SharedPreferencesManager.setSomeStringValue(Constantes.PREF_PLAN, Plan);
 
+                     //retrieve data if user only write de imei without selecting one
+                    //getTelefono();
+
 
                 }else{
-
-                    Toast.makeText(DetalleGps.this, "Algo fue mal, revise la red de sus datos móviles", Toast.LENGTH_LONG).show();
-
+                    loadingDialog.dismissDialog();
+                    Toast.makeText(RegistroVehiculo.this, "Algo fue mal, revise la red de sus datos móviles", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
 
@@ -194,8 +207,9 @@ public class DetalleGps extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.e("failure", t.getLocalizedMessage());
-                Toast.makeText(DetalleGps.this, "Algo fue mal, revise la red de sus datos móviles", Toast.LENGTH_LONG).show();
-
+                loadingDialog.dismissDialog();
+                Toast.makeText(RegistroVehiculo.this, "Algo fue mal, revise la red de sus datos móviles", Toast.LENGTH_LONG).show();
+                return;
             }
         });
 
@@ -204,14 +218,12 @@ public class DetalleGps extends AppCompatActivity {
 
     private void comboBoxComando(){
 
-        //Setting the ArrayAdapter data on the Spinner
-
         List<String> comandoList = new ArrayList<>();
         comandoList.add(0, "DESBLOQUEO");
         comandoList.add("BLOQUEO");
 
         ArrayAdapter<String> dataAdapter;
-        dataAdapter = new ArrayAdapter(DetalleGps.this, android.R.layout.simple_spinner_item,comandoList);
+        dataAdapter = new ArrayAdapter(RegistroVehiculo.this, android.R.layout.simple_spinner_item,comandoList);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerCommand.setAdapter(dataAdapter);
@@ -285,11 +297,36 @@ public class DetalleGps extends AppCompatActivity {
 
     private void comboBoxFlota(){
 
+        if(ListadoTareas.estado){
+            idFlota = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_FLOTA));
+
+            int incrementable = 0;
+
+            for(Map.Entry<Integer, String> entry : DetalleTareas.mapFlota.entrySet()){
+
+                if(idFlota == entry.getKey()){
+
+                    positionFlota = incrementable;
+                    System.out.println("Posicion Flota found it : " + positionFlota);
+
+                }
+
+                incrementable++;
+
+            }
+        }
+
+
         ArrayAdapter<Flota> dataAdapter;
-        dataAdapter = new ArrayAdapter(DetalleGps.this, android.R.layout.simple_spinner_item, (List) TareaActivity.listaFlota);
+        dataAdapter = new ArrayAdapter(RegistroVehiculo.this, android.R.layout.simple_spinner_item, (List) DetalleTareas.listaFlota);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerFlota.setAdapter(dataAdapter);
+
+        if(ListadoTareas.estado){
+            spinnerFlota.setSelection(positionFlota);
+        }
+
 
         spinnerFlota.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -297,7 +334,7 @@ public class DetalleGps extends AppCompatActivity {
 
                 String text = spinnerFlota.getSelectedItem().toString();
 
-                for(Map.Entry m : TareaActivity.mapFlota.entrySet()){
+                for(Map.Entry m : DetalleTareas.mapFlota.entrySet()){
 
                     if(m.getValue().equals(text)){
 
@@ -338,28 +375,31 @@ public class DetalleGps extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 getGps(); //this will call your method every time the user stops typing, if you want to call it for each letter, call it in onTextChanged
+                imeiSelected = false;
+            }
+        });
 
 
-                imeiText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        imeiText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        getGps();
+                imeiSelected = true;
 
-                        String modelo = chipPossible.get(0).getDes_tipo();
-                        modeloGps.setText(modelo);
-                        idGps = chipPossible.get(0).getIdGps();
-                        imeiGps = chipPossible.get(0).getImeiGps();
-                        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_IMEI_GPS, imeiGps);
+                GPSVehiculo imei = (GPSVehiculo)parent.getItemAtPosition(position);
+                idGps  = imei.getIdGps();
+                imeiGps = imei.getImeiGps();
+                String modelo = imei.getDes_tipo();
+                modeloGps.setText(modelo);
 
+                System.out.println("ID GPS REAL : " + imei.getImeiGps());
+                System.out.println("IMEI DEL GPS : " + imei.getImeiGps());
 
-                    }
-                });
+                SharedPreferencesManager.setSomeStringValue(Constantes.PREF_IMEI_GPS, imeiGps);
 
 
             }
         });
-
 
 
     }
@@ -386,7 +426,8 @@ public class DetalleGps extends AppCompatActivity {
                         System.out.println("LISTANDO : " + GPSVehiculo.getImeiGps());
                     }
 
-                    AutoCompleteChipAdapter adapter = new AutoCompleteChipAdapter(DetalleGps.this, chipPossible);
+
+                    AutoCompleteChipAdapter adapter = new AutoCompleteChipAdapter(RegistroVehiculo.this, chipPossible);
                     imeiText.setAdapter(adapter);
 
 
@@ -439,7 +480,6 @@ public class DetalleGps extends AppCompatActivity {
 
                                 if(ubicacion.getUltima_ubicacion()!=null){
 
-
                                     System.out.println("La direccion del vehiculo existe");
                                     loadingDialog.dismissDialog();
 
@@ -480,7 +520,7 @@ public class DetalleGps extends AppCompatActivity {
                     },1000);
 
                 }else{
-                    Toast.makeText(DetalleGps.this, "Algo fue mal, intentelo de nuevo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistroVehiculo.this, "Algo fue mal, Intentelo de nuevo", Toast.LENGTH_SHORT).show();
                     loadingDialog.dismissDialog();
                 }
 
@@ -490,6 +530,7 @@ public class DetalleGps extends AppCompatActivity {
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 Log.e("failure get VehxID", t.getLocalizedMessage());
+                Toast.makeText(RegistroVehiculo.this, "Algo fue mal, Intentelo de nuevo", Toast.LENGTH_SHORT).show();
                 loadingDialog.dismissDialog();
 
             }
@@ -540,9 +581,9 @@ public class DetalleGps extends AppCompatActivity {
 
 
 
+                if(awesomeValidation.validate()==true && imeiSelected==true && telefSelected == true) {
 
-
-                if(awesomeValidation.validate()) {
+                    getPlan();
 
                     idTarea = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TAREA));
                     System.out.println("ID TAREA " + idTarea);
@@ -563,13 +604,7 @@ public class DetalleGps extends AppCompatActivity {
                     vehiculo.setId_flota(idFlota);
 
 
-                    getTelefono();
-
                     loadingDialog.startLoadingDialog();
-
-                    //get modelo. idChip
-                    imeiGps = chipPossible.get(0).getImeiGps();
-                    SharedPreferencesManager.setSomeStringValue(Constantes.PREF_IMEI_GPS, String.valueOf(imeiGps));
 
 
                     Call<RequestVehiculo> call = VehiculoClient.getVehiculoService().registrarVehiculo(vehiculo,idTarea);
@@ -586,7 +621,7 @@ public class DetalleGps extends AppCompatActivity {
 
                             }else{
                                 loadingDialog.dismissDialog();
-                                Toast.makeText(DetalleGps.this, "Algo fue mal, intentelo de nuevo", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistroVehiculo.this, "Algo fue mal, intentelo de nuevo", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -595,13 +630,14 @@ public class DetalleGps extends AppCompatActivity {
                         public void onFailure(Call<RequestVehiculo> call, Throwable t) {
                             Log.e("failure Vehiculo", t.getLocalizedMessage());
                             loadingDialog.dismissDialog();
-                            Toast.makeText(DetalleGps.this, "Algo fue mal, revise la red de sus datos móviles" , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistroVehiculo.this, "Algo fue mal, revise la red de sus datos móviles" , Toast.LENGTH_SHORT).show();
 
                         }
                     });
 
 
                 }else {
+                    Toast.makeText(RegistroVehiculo.this, "Seleccione el IMEI y el Teléfono", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -652,14 +688,14 @@ public class DetalleGps extends AppCompatActivity {
 
                             if(estado==0){
                                 btnEnviar.setEnabled(true);
-                                Toast.makeText(DetalleGps.this, mensaje , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistroVehiculo.this, mensaje , Toast.LENGTH_SHORT).show();
                                 int color = Color.parseColor("#536DFE");
                                 btnEnviar.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
                             }else{
                                 btnEnviar.setEnabled(true);
                                 int color = Color.parseColor("#536DFE");
                                 btnEnviar.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-                                Toast.makeText(DetalleGps.this, mensaje , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistroVehiculo.this, mensaje , Toast.LENGTH_SHORT).show();
                                 Intent activity = new Intent(getApplicationContext(), RegistroOperacion.class);
                                 startActivity(activity);
                             }
@@ -671,14 +707,14 @@ public class DetalleGps extends AppCompatActivity {
                             btnEnviar.setEnabled(true);
                             int color = Color.parseColor("#536DFE");
                             btnEnviar.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
-                            Toast.makeText(DetalleGps.this, "Algo fue mal, intentelo de nuevo", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistroVehiculo.this, "Algo fue mal, intentelo de nuevo", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RequestVehiculo> call, Throwable t) {
                         Log.e("failure send command", t.getLocalizedMessage());
-                        Toast.makeText(DetalleGps.this, "Algo fue mal, revise sus datos de acceso, o la red de sus datos móviles" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroVehiculo.this, "Algo fue mal, revise sus datos de acceso, o la red de sus datos móviles" , Toast.LENGTH_SHORT).show();
                         btnEnviar.setEnabled(true);
                         int color = Color.parseColor("#536DFE");
                         btnEnviar.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
@@ -710,6 +746,7 @@ public class DetalleGps extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 getTelefono();
+                telefSelected = false;
 
             }
         });
@@ -718,10 +755,14 @@ public class DetalleGps extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                telefono = telefonoText.getText().toString();
-                getTelefono();
-                idChip = Integer.parseInt(listaTelefono.get(0).getId_chip());
-                System.out.println("ID CHIP  : " + idChip);
+                telefSelected = true;
+
+                GPSVehiculo telefonoSIM = (GPSVehiculo)parent.getItemAtPosition(position);
+                idChip  = Integer.parseInt(telefonoSIM.getId_chip());
+                System.out.println("ID CHIP REAL : " + telefonoSIM.getId_chip());
+                System.out.println("DESCRIPCION CHIP: " + telefonoSIM.getDes_chip());
+                System.out.println("TELEF-SIMCARD: " +telefono);
+
 
             }
         });
@@ -746,7 +787,7 @@ public class DetalleGps extends AppCompatActivity {
         spinnerMarca = findViewById(R.id.spinnerMarca);
         spinnerModelo = findViewById(R.id.spinnerModelo);
         imeiText = findViewById(R.id.imeiAutoComplete);
-        modeloGps = findViewById(R.id.tipoSolView);
+        modeloGps = findViewById(R.id.modelogpsView);
         telefonoText = findViewById(R.id.telefAutoComplete);
         spinnerCommand = findViewById(R.id.spinnerComando);
 
@@ -756,10 +797,10 @@ public class DetalleGps extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        awesomeValidation.addValidation(DetalleGps.this, R.id.nombreView, RegexTemplate.NOT_EMPTY,R.string.invalid_nombreVeh);
-        awesomeValidation.addValidation(DetalleGps.this, R.id.numCreditoView, "^[0-9]{5,10}$",R.string.invalid_numCredito);
-        awesomeValidation.addValidation(DetalleGps.this, R.id.telefAutoComplete, "^[0-9A-Z\\s-]{9,}$",R.string.invalid_telfonoSIM);
-        awesomeValidation.addValidation(DetalleGps.this, R.id.imeiAutoComplete, "^[0-9]{10,}$",R.string.invalid_imei);
+        awesomeValidation.addValidation(RegistroVehiculo.this, R.id.nombreView, RegexTemplate.NOT_EMPTY,R.string.invalid_nombreVeh);
+        awesomeValidation.addValidation(RegistroVehiculo.this, R.id.numCreditoView, "^[0-9]{5,10}$",R.string.invalid_numCredito);
+        awesomeValidation.addValidation(RegistroVehiculo.this, R.id.telefAutoComplete, "^[0-9A-Z\\s-]{9,}$",R.string.invalid_telfonoSIM);
+        awesomeValidation.addValidation(RegistroVehiculo.this, R.id.imeiAutoComplete, "^[0-9]{10,}$",R.string.invalid_imei);
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -771,6 +812,49 @@ public class DetalleGps extends AppCompatActivity {
 
     private void llenarCasillas() {
 
+        String nombre =  SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NOM_VEH);
+        String numCredit = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_CRE);
+        String imei = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_IMEI_GPS);
+        String modelo = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_MODEL_GPS);
+        String telefonoSIM = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_TELEFONO2);
+        String SutranFlag = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_SUTRAN);
+        String ultDireccion = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_DIRECCION);
+        String ultTrans = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_TRANS);
+        int flagBloqueo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_FLAG_BLOQUEO));
+        idGps = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_GPS));
+        idChip = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_CHIP));
+
+
+        if(ListadoTareas.estado){
+
+            imeiSelected = true;
+            telefSelected = true;
+            nombreText.setText(nombre);
+            numCreditoText.setText(numCredit);
+            imeiText.setText(imei);
+            modeloGps.setText(modelo);
+            telefonoText.setText(telefonoSIM);
+            direccionText.setText(ultDireccion);
+            ultimaTransText.setText(ultTrans);
+
+
+            if(flagBloqueo == 0){
+                bloqueText.setText("NO");
+            }else{
+                bloqueText.setText("SI");
+            }
+
+            if(SutranFlag.equals("N")){
+                System.out.println("INGRESO CONDICION ES N");
+                spinnerSutran.setSelection(0);
+            }else{
+                System.out.println("INGRESO CONDICION ES S");
+                spinnerSutran.setSelection(1);
+            }
+
+
+
+        }
 
 
 
@@ -778,30 +862,50 @@ public class DetalleGps extends AppCompatActivity {
 
     private void llenarComboBoxTipoVehiculo(){
 
+        idTipo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TIPO));
 
-        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
 
         List<TipoVehiculo> tempList = new ArrayList<>();
 
         tempList = dataBaseHelper.getTipoVehiculo();
 
-        for(TipoVehiculo tipo: tempList ){
+        int incrementable = 0;
 
+        for(TipoVehiculo tipo: tempList ){
 
             listaTipo.add(tipo.getDesTipo());
             mapTipo.put(tipo.getIdTipo(),tipo.getDesTipo());
             System.out.println("TIPO DEVEHICULO DES : " + tipo.getDesTipo());
+
+                if(ListadoTareas.estado){
+                    if(idTipo == tipo.getIdTipo()){
+
+                        positionTipo = incrementable;
+                        System.out.println("POSICION TIPO  SELECT ES " + positionTipo);
+
+                    }
+
+                    incrementable++;
+
+                }
 
         }
 
 
 
         ArrayAdapter<TipoVehiculo> dataAdapter;
-        dataAdapter = new ArrayAdapter(DetalleGps.this, android.R.layout.simple_spinner_item, listaTipo);
+        dataAdapter = new ArrayAdapter(RegistroVehiculo.this, android.R.layout.simple_spinner_item, listaTipo);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerTipoVeh.setAdapter(dataAdapter);
 
+        if(ListadoTareas.estado){
+
+            spinnerTipoVeh.setSelection(positionTipo);
+
+        }
 
         spinnerTipoVeh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -844,7 +948,7 @@ public class DetalleGps extends AppCompatActivity {
                     listaTipo =  response.body();
                     System.out.println("LISTADO DE TIPO VEHICULO  : " + listaTipo);
 
-                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
                     TipoVehiculo tipoVeh = new TipoVehiculo();
                     boolean success  = false;
 
@@ -858,7 +962,7 @@ public class DetalleGps extends AppCompatActivity {
 
                     }
 
-                    Toast.makeText(DetalleGps.this, "Success " + success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistroVehiculo.this, "Success " + success, Toast.LENGTH_SHORT).show();
 
 
 
@@ -910,7 +1014,7 @@ public class DetalleGps extends AppCompatActivity {
 
     private void borrarRegistrosLocales(){
 
-        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
 
         dataBaseHelper.deleteRows();
 
@@ -928,7 +1032,7 @@ public class DetalleGps extends AppCompatActivity {
                     listaModelo = response.body();
                     System.out.println("INGRESO RESPONSE MODELO LOCAL");
 
-                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
                     ModeloVehiculo modelo = new ModeloVehiculo();
                     boolean success =false;
 
@@ -941,7 +1045,7 @@ public class DetalleGps extends AppCompatActivity {
                         success = dataBaseHelper.addModelo(modelo);
                     }
 
-                    Toast.makeText(DetalleGps.this, "SUCCESS : " + success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistroVehiculo.this, "SUCCESS : " + success, Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -968,7 +1072,7 @@ public class DetalleGps extends AppCompatActivity {
                     listaMarca =  response.body();
 
 
-                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
                     Marca marca = new Marca();
                     boolean success  = false;
 
@@ -983,7 +1087,7 @@ public class DetalleGps extends AppCompatActivity {
                             success = dataBaseHelper.addMarca(marca);
 
 
-                        Toast.makeText(DetalleGps.this, "Success " + success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistroVehiculo.this, "Success " + success, Toast.LENGTH_SHORT).show();
 
                     }
                     }
@@ -1010,12 +1114,15 @@ public class DetalleGps extends AppCompatActivity {
 
         listaModelo.clear();
 
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
 
-        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(DetalleGps.this);
+        idModelo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MODELO));
 
         List<ModeloVehiculo> tempList = new ArrayList<>();
 
         tempList = dataBaseHelper.getModeloVehiculo(idMarca);
+
+        int incrementable = 0;
 
         for(ModeloVehiculo m: tempList ){
 
@@ -1024,14 +1131,30 @@ public class DetalleGps extends AppCompatActivity {
             mapModelo.put(m.getIdModelo(),m.getDesModelo());
             System.out.println("MODELO DESCRIPCION : " + m.getDesModelo());
 
+            if(ListadoTareas.estado){
+                if(idModelo == m.getIdModelo()){
+
+                    position = incrementable;
+                    System.out.println("POSICION MODELO SELECT ES " + position);
+
+                }
+
+                incrementable++;
+
+            }
+
         }
 
 
         ArrayAdapter<ModeloVehiculo> dataAdapter;
-        dataAdapter = new ArrayAdapter(DetalleGps.this, android.R.layout.simple_spinner_item, listaModelo);
+        dataAdapter = new ArrayAdapter(RegistroVehiculo.this, android.R.layout.simple_spinner_item, listaModelo);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerModelo.setAdapter(dataAdapter);
+
+        if(ListadoTareas.estado){
+            spinnerModelo.setSelection(position);
+        }
 
 
         spinnerModelo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1066,13 +1189,15 @@ public class DetalleGps extends AppCompatActivity {
 
     private void llenarComboBoxMarca(){
 
+        idMarca = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MARCA));
 
-
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(DetalleGps.this);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(RegistroVehiculo.this);
 
         List<Marca> tempList = new ArrayList<>();
 
         tempList = dataBaseHelper.getMarca();
+
+        int incrementable = 0;
 
         for(Marca m: tempList ){
 
@@ -1081,13 +1206,34 @@ public class DetalleGps extends AppCompatActivity {
             mapMarca.put(m.getIdMarca(),m.getDesMarca());
             System.out.println("MARCA : " + m.getDesMarca());
 
+            if(ListadoTareas.estado){
+                if(idMarca == m.getIdMarca()){
+
+                    position = incrementable;
+                    System.out.println("POSICION DEL SELECT ES " + position);
+
+                }
+
+                incrementable++;
+
+            }
+
         }
 
-        ArrayAdapter<Flota> dataAdapter;
-        dataAdapter = new ArrayAdapter(DetalleGps.this, android.R.layout.simple_spinner_item, listaMarca);
+
+
+        ArrayAdapter<Marca> dataAdapter;
+        dataAdapter = new ArrayAdapter(RegistroVehiculo.this, android.R.layout.simple_spinner_item, listaMarca);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinnerMarca.setAdapter(dataAdapter);
+
+        if(ListadoTareas.estado){
+
+            spinnerMarca.setSelection(position);
+
+        }
+
 
         spinnerMarca.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1128,7 +1274,7 @@ public class DetalleGps extends AppCompatActivity {
 
     private void getTelefono(){
 
-        telefono = telefonoText.getText().toString();
+        telefono = telefonoText.getText().toString(); //Retrieve the whole data incluiding telef+ SIMCARD
 
         System.out.println("CELULAR  : " + telefono);
 
@@ -1142,15 +1288,18 @@ public class DetalleGps extends AppCompatActivity {
                     System.out.println("ENTRO AL METODO SUCCESS");
                     listaTelefono =  response.body();
                     System.out.println("LISTADO DE TELEFONO  : " + listaTelefono);
-                    AutoCompleteTelefAdapter adapter = new AutoCompleteTelefAdapter(DetalleGps.this, listaTelefono);
+                    AutoCompleteTelefAdapter adapter = new AutoCompleteTelefAdapter(RegistroVehiculo.this, listaTelefono);
                     telefonoText.setAdapter(adapter);
 
+                }else{
+                    loadingDialog.dismissDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<List<GPSVehiculo>> call, Throwable t) {
                 Log.e("failure", t.getLocalizedMessage());
+                loadingDialog.dismissDialog();
             }
         });
 

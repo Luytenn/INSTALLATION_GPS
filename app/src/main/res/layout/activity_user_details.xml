@@ -23,7 +23,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/tipoSolView"
+        android:id="@+id/modelogpsView"
         android:layout_width="match_parent"
         android:text="username"
         android:padding="10dp"

@@ -12,14 +12,14 @@
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
+        app:layout_constraintBottom_toTopOf="@+id/editTextUsuario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextUsuario"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="32dp"
@@ -46,10 +46,10 @@
         android:hint="Contraseña"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
-        app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
+        app:layout_constraintEnd_toEndOf="@+id/editTextUsuario"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/editTextEmail"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        app:layout_constraintStart_toStartOf="@+id/editTextUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUsuario" />
 
     <Button
         android:id="@+id/buttonLogin"

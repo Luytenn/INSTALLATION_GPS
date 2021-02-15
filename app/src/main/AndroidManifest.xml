@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:label="GPSInstallation"
         android:name=".common.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,17 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.RegistroOperacion"></activity>
-        <activity android:name=".ui.DetalleGps"></activity>
-        <activity android:name=".ui.TestActivity">
-
-        </activity>
+        <activity android:name=".ui.RegistroVehiculo"></activity>
         <activity
             android:name=".ui.IngresoIMEI"
             android:parentActivityName=".ui.DetalleTareas">
 
         </activity>
         <activity android:name=".ui.DetalleTareas" />
-        <activity android:name=".ui.TareaActivity" />
+        <activity android:name=".ui.ListadoTareas" />
         <activity android:name=".ui.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

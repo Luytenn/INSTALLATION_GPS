@@ -12,12 +12,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import net.larntech.R;
 import net.larntech.common.Constantes;
@@ -169,7 +166,7 @@ public class IngresoIMEI extends AppCompatActivity {
                         SharedPreferencesManager.setSomeStringValue(Constantes.PREF_MODEL_GPS, modeloGps);
                         System.out.println("ID GPS : " + idGps);
                         loadingDialog.dismissDialog();
-                        Intent activity2Intent = new Intent(getApplicationContext(), DetalleGps.class);
+                        Intent activity2Intent = new Intent(getApplicationContext(), RegistroVehiculo.class);
                         startActivity(activity2Intent);
                     }
                 },5000);
