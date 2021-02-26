@@ -135,7 +135,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextIMEI" />
 
         <TextView
-            android:id="@+id/modelogpsView"
+            android:id="@+id/vinView"
             android:layout_width="226dp"
             android:layout_height="58dp"
             android:foregroundGravity="center_vertical"
@@ -215,7 +215,7 @@
             android:inputType="phone"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/editTextIMEIOperar"
-            app:layout_constraintTop_toBottomOf="@+id/modelogpsView" />
+            app:layout_constraintTop_toBottomOf="@+id/vinView" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
@@ -322,6 +322,8 @@
             android:hint="Ingrese Nombre Vehiculo"
             android:text=""
             android:textSize="16sp"
+            android:inputType="textCapCharacters"
+            android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
             app:layout_constraintTop_toBottomOf="@+id/spinnerTipoVehiculo" />
 

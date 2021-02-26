@@ -31,7 +31,9 @@ import retrofit2.Response;
 
 public class DetalleTareas extends AppCompatActivity {
 
-    TextView placaText,vinText,colorText,clienteText,tipoSoltText,conceText,direcText;
+    TextView placaText,vinText,colorText,clienteText,conceText,direcText;
+    TextView marcaText;
+    TextView modeloText;
     TecnicoTareas userResponse;
     Button button2;
     boolean estado;
@@ -249,12 +251,14 @@ public class DetalleTareas extends AppCompatActivity {
     private void obtenerViews(){
 
         clienteText = findViewById(R.id.cliente);
-        placaText  = findViewById(R.id.clienteView);
-        vinText  = findViewById(R.id.modelogpsView);
-        colorText  = findViewById(R.id.imeiView);
-        tipoSoltText = findViewById(R.id.tipoSolicitud);
+        placaText  = findViewById(R.id.placaView);
+        vinText  = findViewById(R.id.vinView);
+        colorText  = findViewById(R.id.colorView);
         conceText = findViewById(R.id.concecionario);
         direcText = findViewById(R.id.direccion);
+        marcaText = findViewById(R.id.marcaVehView);
+        modeloText = findViewById(R.id.modeloVehView);
+
 
     }
 
@@ -268,9 +272,10 @@ public class DetalleTareas extends AppCompatActivity {
             String vin = userResponse.getNumero_vin();
             String color = userResponse.getColor();
             String cliente = userResponse.getCliente();
-            String tipoSol = userResponse.getTipoSolicitud();
             String concecionario = userResponse.getConcecionario();
             String direccion = userResponse.getDireccion();
+            String marca = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_DES_MARCA);
+            String modelo = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_DES_MODELO);
             estado = userResponse.getEstado();
 
             if(estado){
@@ -283,10 +288,10 @@ public class DetalleTareas extends AppCompatActivity {
             vinText.setText(vin);
             colorText.setText(color);
             clienteText.setText(cliente);
-            tipoSoltText.setText(tipoSol);
             conceText.setText(concecionario);
             direcText.setText(direccion);
-
+            marcaText.setText(marca);
+            modeloText.setText(modelo);
             SharedPreferencesManager.setSomeStringValue(Constantes.PREF_CLIENTE,cliente);
 
 

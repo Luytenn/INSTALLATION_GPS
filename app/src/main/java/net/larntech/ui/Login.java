@@ -117,11 +117,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         if(marca!=false && tipo!=false && modelo!=false) {
 
-            String email = etUsuario.getText().toString();
+            String usuario = etUsuario.getText().toString();
             String password = etPassword.getText().toString();
             String grant_type = "password";
 
-            if (email.isEmpty()) {
+            if (usuario.isEmpty()) {
                 etUsuario.setError("El usuario es requerido");
 
             } else if (password.isEmpty()) {
@@ -133,7 +133,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 int color = Color.parseColor("#5356fe");
                 btnLogin.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC));
 
-                Call<ResponseAuth> call = loginService.doLogin(email, password, grant_type);
+                Call<ResponseAuth> call = loginService.doLogin(usuario, password, grant_type);
 
 
                 call.enqueue(new Callback<ResponseAuth>() {
@@ -142,7 +142,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         if (response.isSuccessful()) {
 
                             SharedPreferencesManager.setSomeStringValue(Constantes.PREF_TOKEN, response.body().getAccess_token());
-                            SharedPreferencesManager.setSomeStringValue(Constantes.PREF_USERNAME, email);
+                            SharedPreferencesManager.setSomeStringValue(Constantes.PREF_USERNAME, usuario);
 
                             System.out.println(response.body().getAccess_token());
 
@@ -218,7 +218,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                         }
 
-                        Toast.makeText(Login.this, "Success " + success, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Login.this, "Success " + success, Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -268,7 +268,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             success = dataBaseHelper.addModelo(modelo);
                         }
 
-                        Toast.makeText(Login.this, "SUCCESS : " + success, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Login.this, "SUCCESS : " + success, Toast.LENGTH_SHORT).show();
 
 
                     }
@@ -319,7 +319,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                         }
 
-                        Toast.makeText(Login.this, "Success " + success, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Login.this, "Success " + success, Toast.LENGTH_SHORT).show();
 
                     }
 

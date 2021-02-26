@@ -163,6 +163,7 @@ public class ListadoTareas extends AppCompatActivity implements TareasAdapter.Cl
         startActivity(new Intent(this,DetalleTareas.class).putExtra("data", userResponse));
         SharedPreferencesManager.setSomeStringValue(Constantes.PREF_TELEFONO,userResponse.getCelular());
         SharedPreferencesManager.setSomeStringValue(Constantes.PREF_ID_TAREA,String.valueOf(userResponse.getId()));
+        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_COLOR, userResponse.getColor());
         estado = userResponse.getEstado();
         System.out.println("ESTAO DE LA TAREA : " + estado);
 

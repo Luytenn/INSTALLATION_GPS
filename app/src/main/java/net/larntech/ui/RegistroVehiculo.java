@@ -141,18 +141,11 @@ public class RegistroVehiculo extends AppCompatActivity {
 
         comboBoxFlota();
 
-
-
         comboBoxComando();
 
         dropdownIMEI();
 
         dropdownTelefono();
-
-
-        //insertarMarcaLocal();
-        //insertarModeloLocal();
-        //insertarTipoVehiculoLocal();
 
         llenarComboBoxMarca();
 
@@ -787,7 +780,7 @@ public class RegistroVehiculo extends AppCompatActivity {
         spinnerMarca = findViewById(R.id.spinnerMarca);
         spinnerModelo = findViewById(R.id.spinnerModelo);
         imeiText = findViewById(R.id.imeiAutoComplete);
-        modeloGps = findViewById(R.id.modelogpsView);
+        modeloGps = findViewById(R.id.vinView);
         telefonoText = findViewById(R.id.telefAutoComplete);
         spinnerCommand = findViewById(R.id.spinnerComando);
 
@@ -812,20 +805,23 @@ public class RegistroVehiculo extends AppCompatActivity {
 
     private void llenarCasillas() {
 
-        String nombre =  SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NOM_VEH);
-        String numCredit = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_CRE);
-        String imei = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_IMEI_GPS);
-        String modelo = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_MODEL_GPS);
-        String telefonoSIM = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_TELEFONO2);
-        String SutranFlag = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_SUTRAN);
-        String ultDireccion = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_DIRECCION);
-        String ultTrans = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_TRANS);
-        int flagBloqueo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_FLAG_BLOQUEO));
-        idGps = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_GPS));
-        idChip = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_CHIP));
+
 
 
         if(ListadoTareas.estado){
+
+            String nombre =  SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NOM_VEH);
+            String numCredit = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_CRE);
+            String imei = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_IMEI_GPS);
+            String modelo = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_MODEL_GPS);
+            String telefonoSIM = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_TELEFONO2);
+            String SutranFlag = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_NUM_SUTRAN);
+            String ultDireccion = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_DIRECCION);
+            String ultTrans = SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ULT_TRANS);
+            int flagBloqueo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_FLAG_BLOQUEO));
+            idGps = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_GPS));
+            idChip = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_CHIP));
+
 
             imeiSelected = true;
             telefSelected = true;
@@ -862,7 +858,7 @@ public class RegistroVehiculo extends AppCompatActivity {
 
     private void llenarComboBoxTipoVehiculo(){
 
-        idTipo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TIPO));
+
 
 
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
@@ -880,6 +876,7 @@ public class RegistroVehiculo extends AppCompatActivity {
             System.out.println("TIPO DEVEHICULO DES : " + tipo.getDesTipo());
 
                 if(ListadoTareas.estado){
+                    idTipo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TIPO));
                     if(idTipo == tipo.getIdTipo()){
 
                         positionTipo = incrementable;
@@ -1116,7 +1113,7 @@ public class RegistroVehiculo extends AppCompatActivity {
 
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(RegistroVehiculo.this);
 
-        idModelo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MODELO));
+
 
         List<ModeloVehiculo> tempList = new ArrayList<>();
 
@@ -1132,6 +1129,7 @@ public class RegistroVehiculo extends AppCompatActivity {
             System.out.println("MODELO DESCRIPCION : " + m.getDesModelo());
 
             if(ListadoTareas.estado){
+                idModelo = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MODELO));
                 if(idModelo == m.getIdModelo()){
 
                     position = incrementable;
@@ -1189,7 +1187,8 @@ public class RegistroVehiculo extends AppCompatActivity {
 
     private void llenarComboBoxMarca(){
 
-        idMarca = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MARCA));
+
+
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(RegistroVehiculo.this);
 
@@ -1207,6 +1206,7 @@ public class RegistroVehiculo extends AppCompatActivity {
             System.out.println("MARCA : " + m.getDesMarca());
 
             if(ListadoTareas.estado){
+                idMarca = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_MARCA));
                 if(idMarca == m.getIdMarca()){
 
                     position = incrementable;

@@ -23,6 +23,12 @@ public class TecnicoTareas implements Serializable {
     @SerializedName("color")
     @Expose
     private String color;
+    @SerializedName("marca")
+    @Expose
+    private String marca;
+    @SerializedName("modelo")
+    @Expose
+    private String modelo;
     @SerializedName("concecionario")
     @Expose
     private String concecionario;
@@ -48,24 +54,16 @@ public class TecnicoTareas implements Serializable {
     public TecnicoTareas() {
     }
 
-    /**
-     * 
-     * @param cliente
-     * @param numero_vin
-     * @param color
-     * @param concecionario
-     * @param tipoSolicitud
-     * @param direccion
-     * @param id
-     * @param placa
-     */
-    public TecnicoTareas(Integer id, String placa, String cliente, String numero_vin, String color, String concecionario, String direccion, String tipo_solicitud, String celular, boolean estado) {
+
+    public TecnicoTareas(Integer id, String placa, String cliente, String numero_vin, String color,String marca, String modelo, String concecionario, String direccion, String tipo_solicitud, String celular, boolean estado) {
         super();
         this.id = id;
         this.placa = placa;
         this.cliente = cliente;
         this.numero_vin = numero_vin;
         this.color = color;
+        this.marca = marca;
+        this.modelo = modelo;
         this.concecionario = concecionario;
         this.direccion = direccion;
         this.tipo_solicitud = tipo_solicitud;
@@ -123,6 +121,34 @@ public class TecnicoTareas implements Serializable {
 
     public String getColor() {
         return color;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getTipo_solicitud() {
+        return tipo_solicitud;
+    }
+
+    public void setTipo_solicitud(String tipo_solicitud) {
+        this.tipo_solicitud = tipo_solicitud;
+    }
+
+    public boolean isEstado() {
+        return estado;
     }
 
     public void setColor(String color) {

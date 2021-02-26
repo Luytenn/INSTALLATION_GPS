@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.larntech.R;
+import net.larntech.common.Constantes;
+import net.larntech.common.SharedPreferencesManager;
 import net.larntech.retrofit.response.TecnicoTareas;
 
 import java.util.List;
@@ -58,13 +60,17 @@ public class TareasAdapter extends RecyclerView.Adapter<TareasAdapter.TareasAdap
         String vin = userResponse.getNumero_vin();
         String conceci = userResponse.getConcecionario();
         String direccion = userResponse.getDireccion();
-
-
+        String marca = userResponse.getMarca();
+        String modelo = userResponse.getModelo();
+        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_DES_MARCA,marca);
+        SharedPreferencesManager.setSomeStringValue(Constantes.PREF_DES_MODELO,modelo);
 
         holder.placa.setText(placa);
         holder.vin.setText(vin);
         holder.conceci.setText(conceci);
         holder.direccion.setText(direccion);
+        holder.marca.setText(marca);
+        holder.modelo.setText(modelo);
 
         if(estado){
             //holder.itemRecycler.setBackgroundColor(Color.parseColor("#96dfff"));
@@ -101,6 +107,8 @@ public class TareasAdapter extends RecyclerView.Adapter<TareasAdapter.TareasAdap
         TextView conceci;
         TextView direccion;
         ImageView imageMore;
+        TextView marca;
+        TextView modelo;
         RelativeLayout itemRecycler;
 
 
@@ -110,11 +118,14 @@ public class TareasAdapter extends RecyclerView.Adapter<TareasAdapter.TareasAdap
             super(itemView);
 
             itemRecycler = itemView.findViewById(R.id.ItemRecycler);
-            placa = itemView.findViewById(R.id.clienteView);
-            vin = itemView.findViewById(R.id.modelogpsView);
+            placa = itemView.findViewById(R.id.placaView);
+            vin = itemView.findViewById(R.id.vinView);
             conceci = itemView.findViewById(R.id.concecionario);
             direccion = itemView.findViewById(R.id.direccion);
+            marca = itemView.findViewById(R.id.marcaView);
+            modelo = itemView.findViewById(R.id.modeloText);
             imageMore = itemView.findViewById(R.id.imageMore);
+
 
 
 

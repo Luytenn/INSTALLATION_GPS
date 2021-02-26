@@ -238,8 +238,8 @@ public class RegistroOperacion extends AppCompatActivity {
         spinnerPosicionGps = findViewById(R.id.spinnerPosicionGps);
         spinnerTipoTrabajo = findViewById(R.id.spinnerTipoTrabajo);
         planText = findViewById(R.id.planView);
-        clienteText = findViewById(R.id.clienteView);
-        imeiText = findViewById(R.id.imeiView);
+        clienteText = findViewById(R.id.placaView);
+        imeiText = findViewById(R.id.colorView);
         btnOperacion = findViewById(R.id.btnGrabarOperacion);
 
         idTarea = Integer.parseInt(SharedPreferencesManager.getSomeStringValue(Constantes.PREF_ID_TAREA));
